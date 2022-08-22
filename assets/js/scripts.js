@@ -17,31 +17,37 @@ const themes = [
     {
         selector: "light_mode",
         background: getStyle(html, "--background"),
+        primaryColors: getStyle(html, "--primary-color"),
         colorText: getStyle(html, "--color-text"),
     },
     {
         selector: "dark_mode",
         background: "#333333",
+        primaryColor: "blue",
         colorText: "#B5B5B5"
     },
     {
         selector: "blue_mode",
         background: "#2196f3",
+        primaryColor: "blue",
         colorText: "#e0e0e0"
     },
     {
         selector: "pink_mode",
         background: "#e91e63",
+        primaryColor: "blue",
         colorText: "#fafafa"
     },
     {
         selector: "purple_mode",
         background: "#9c27b0",
+        primaryColor: "blue",
         colorText: "#e1bee7"
     },
     {
         selector: "green_mode",
         background: "#4caf50",
+        primaryColor: "blue",
         colorText: "#eeeeee"
     }
 ]

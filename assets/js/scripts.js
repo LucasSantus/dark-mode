@@ -19,40 +19,27 @@ const themes = [
         background: getStyle(html, "--background"),
         primaryColors: getStyle(html, "--primary-color"),
         colorText: getStyle(html, "--color-text"),
+        lightColor: getStyle(html, "--light-color"),
     },
     {
         selector: "dark_mode",
         background: "#333333",
         primaryColor: "blue",
-        colorText: "#B5B5B5"
-    },
-    {
-        selector: "blue_mode",
-        background: "#2196f3",
-        primaryColor: "blue",
-        colorText: "#e0e0e0"
-    },
-    {
-        selector: "pink_mode",
-        background: "#e91e63",
-        primaryColor: "blue",
-        colorText: "#fafafa"
+        colorText: "#B5B5B5",
+        lightColor: "#B5B5B5"
     },
     {
         selector: "purple_mode",
-        background: "#9c27b0",
+        background: "#1E182A",
         primaryColor: "blue",
-        colorText: "#e1bee7"
+        colorText: "#B5B5B5",
+        lightColor: "#B5B5B5"
     },
-    {
-        selector: "green_mode",
-        background: "#4caf50",
-        primaryColor: "blue",
-        colorText: "#eeeeee"
-    }
 ]
 
 if(!isExistLocalStorage("themes")) createOrEditLocalStorage("themes", "light_mode")
+
+if(isExistLocalStorage("themes")) changeColors(themes.find(item => item.selector === getValueLocalStorage("themes")))
 
 button.addEventListener("click", () => {
     let currentTheme = getValueLocalStorage("themes");

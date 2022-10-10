@@ -1,53 +1,58 @@
 const html = document.querySelector("html")
-const button = document.getElementById("select_themes")
+const check = document.querySelector("input[name=theme]")
+
+const getStyle = ( element, style ) => window.getComputedStyle(element).getPropertyValue(style)
+
+const lightMode = {
+    bg: getStyle(html, "--bg"),
+    bgPanel: getStyle(html, "--bg-panel"),
+    colorHeadings: getStyle(html, "--color-headings"),
+    colorText: getStyle(html, "--color-text"),
+}
+
+const darkMode = {
+    bg: "#333333",
+    bgPanel: "#434343",
+    colorHeadings: "#3664FF",
+    colorText: "#B5B5B5"
+}
 
 const transformKey = key => "--" + key.replace(/([A-Z])/g, "-$1").toLowerCase()
 
-const changeColors = (colors) => Object.keys(colors).map(key => html.style.setProperty(transformKey(key), colors[key]))
+const changeColors = ( colors ) => {
+    Object.keys(colors).map(key => 
+        html.style.setProperty(transformKey(key), colors[key]) 
+    )
+}
 
-const isExistLocalStorage = (key) => localStorage.getItem(key) != null
-
-const createOrEditLocalStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value))
-
-const getValueLocalStorage = (key) => JSON.parse(localStorage.getItem(key))
-
-const getStyle = (element, style) => window.getComputedStyle(element).getPropertyValue(style)
-
-const themes = [
-    {
-        selector: "light_mode",
-        background: getStyle(html, "--background"),
-        primaryColors: getStyle(html, "--primary-color"),
-        colorText: getStyle(html, "--color-text"),
-        lightColor: getStyle(html, "--light-color"),
-    },
-    {
-        selector: "dark_mode",
-        background: "#333333",
-        primaryColor: "blue",
-        colorText: "#B5B5B5",
-        lightColor: "#B5B5B5"
-    },
-    {
-        selector: "purple_mode",
-        background: "#1E182A",
-        primaryColor: "blue",
-        colorText: "#B5B5B5",
-        lightColor: "#B5B5B5"
-    },
-]
-
-if(!isExistLocalStorage("themes")) createOrEditLocalStorage("themes", "light_mode")
-
-if(isExistLocalStorage("themes")) changeColors(themes.find(item => item.selector === getValueLocalStorage("themes")))
-
-button.addEventListener("click", () => {
-    let currentTheme = getValueLocalStorage("themes");
-    themes.map((theme, index) => {
-        if(theme.selector === currentTheme){
-            const choice = index === themes.length - 1 ? themes[0] : themes[index + 1];
-            changeColors(choice) 
-            createOrEditLocalStorage("themes", choice['selector'])
-        }
-    })
+check.addEventListener("change", ({target}) => {
+    target.checked ? changeColors(darkMode) : changeColors(lightMode)
 })
+
+const isExistLocalStorage = ( key ) => localStorage.getItem(key) != null
+
+const createOrEditLocalStorage = ( key, value ) => localStorage.setItem(key, JSON.stringify(value))
+
+const getValeuLocalStorage = ( key ) => JSON.parse(localStorage.getItem(key))
+
+check.addEventListener("change", ({target}) => {
+    if (target.checked) {
+        changeColors(darkMode) 
+        createOrEditLocalStorage('theme','darkMode')
+    } 
+    else {
+        changeColors(lightMode)
+        createOrEditLocalStorage('theme','lightMode')
+    }
+})
+
+if(!isExistLocalStorage('theme'))createOrEditLocalStorage('theme', 'lightMode')
+
+if (getValeuLocalStorage('theme') === "lightMode") {
+    check.removeAttribute('checked')
+    changeColors(lightMode);
+}
+else {
+    check.setAttribute('checked', "")
+    changeColors(darkMode);
+}
